@@ -16,17 +16,17 @@ load_dotenv('config.env', override=True)
 
 logging.basicConfig(level=logging.INFO)
 
-api_id = os.environ.get('TELEGRAM_API', '')
+api_id = os.environ.get('TELEGRAM_API', '27499182')
 if len(api_id) == 0:
     logging.error("TELEGRAM_API variable is missing! Exiting now")
     exit(1)
 
-api_hash = os.environ.get('TELEGRAM_HASH', '')
+api_hash = os.environ.get('TELEGRAM_HASH', '9c58142ef6abed28808a50e3e983c39c')
 if len(api_hash) == 0:
     logging.error("TELEGRAM_HASH variable is missing! Exiting now")
     exit(1)
     
-bot_token = os.environ.get('BOT_TOKEN', '')
+bot_token = os.environ.get('BOT_TOKEN', '6429961389:AAG0vvsFegDF3aDNEOGqIYmr4Bt3xfW8Bfk')
 if len(bot_token) == 0:
     logging.error("BOT_TOKEN variable is missing! Exiting now")
     exit(1)
@@ -67,17 +67,7 @@ async def start_command(client, message):
     else:
         await message.reply_text(reply_message, reply_markup=reply_markup)
 
-async def is_user_member(client, user_id):
-    try:
-        member = await client.get_chat_member(fsub_id, user_id)
-        logging.info(f"User {user_id} membership status: {member.status}")
-        if member.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
-            return True
-        else:
-            return False
-    except Exception as e:
-        logging.error(f"Error checking membership status for user {user_id}: {e}")
-        return False
+
 
 @app.on_message(filters.text)
 async def handle_message(client, message: Message):
@@ -87,13 +77,7 @@ async def handle_message(client, message: Message):
 
     user_id = message.from_user.id
     user_mention = message.from_user.mention
-    is_member = await is_user_member(client, user_id)
-
-    if not is_member:
-        join_button = InlineKeyboardButton("ᴊᴏɪɴ ❤️🚀", url="https://t.me/jetmirror")
-        reply_markup = InlineKeyboardMarkup([[join_button]])
-        await message.reply_text("ʏᴏᴜ ᴍᴜsᴛ ᴊᴏɪɴ ᴍʏ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴜsᴇ ᴍᴇ.", reply_markup=reply_markup)
-        return
+    
 
     valid_domains = [
     'terabox.com', 'nephobox.com', '4funbox.com', 'mirrobox.com', 
