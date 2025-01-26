@@ -16,18 +16,23 @@ load_dotenv('config.env', override=True)
 
 logging.basicConfig(level=logging.INFO)
 
-load_dotenv()
+api_id = os.environ.get('TELEGRAM_API', '')
+if len(api_id) == 0:
+    logging.error("TELEGRAM_API variable is missing! Exiting now")
+    exit(1)
 
-API_ID=27499182
-API_HASH="9c58142ef6abed28808a50e3e983c39c"
-BOT_TOKEN="6429961389:AAG0vvsFegDF3aDNEOGqIYmr4Bt3xfW8Bfk"
+api_hash = os.environ.get('TELEGRAM_HASH', '')
+if len(api_hash) == 0:
+    logging.error("TELEGRAM_HASH variable is missing! Exiting now")
+    exit(1)
+    
+bot_token = os.environ.get('BOT_TOKEN', '')
+if len(bot_token) == 0:
+    logging.error("BOT_TOKEN variable is missing! Exiting now")
+    exit(1)
 
-app = Client(
-    "my_bot",
-    api_id=os.getenv("API_ID"),       # API ID from Telegram
-    api_hash=os.getenv("API_HASH"),   # API Hash from Telegram
-    bot_token=os.getenv("BOT_TOKEN")  # Bot Token from BotFather
-)
+
+app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
 @app.on_message(filters.command("start"))
 async def start_command(client, message):
@@ -50,7 +55,17 @@ async def start_command(client, message):
     else:
         await message.reply_text(reply_message, reply_markup=reply_markup)
 
-
+async def is_user_member(client, user_id):
+    try:
+        member = await client.get_chat_member(fsub_id, user_id)
+        logging.info(f"User {user_id} membership status: {member.status}")
+        if member.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
+            return True
+        else:
+            return False
+    except Exception as e:
+        logging.error(f"Error checking membership status for user {user_id}: {e}")
+        return False
 
 @app.on_message(filters.text)
 async def handle_message(client, message: Message):
