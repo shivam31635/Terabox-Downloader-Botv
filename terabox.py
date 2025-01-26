@@ -16,9 +16,11 @@ load_dotenv('config.env', override=True)
 
 logging.basicConfig(level=logging.INFO)
 
+load_dotenv()
+
 API_ID=27499182
-API_HASH=9c58142ef6abed28808a50e3e983c39c
-BOT_TOKEN=6429961389:AAG0vvsFegDF3aDNEOGqIYmr4Bt3xfW8Bfk
+API_HASH="9c58142ef6abed28808a50e3e983c39c"
+BOT_TOKEN="6429961389:AAG0vvsFegDF3aDNEOGqIYmr4Bt3xfW8Bfk"
 
 app = Client(
     "my_bot",
