@@ -16,35 +16,16 @@ load_dotenv('config.env', override=True)
 
 logging.basicConfig(level=logging.INFO)
 
-api_id = os.environ.get('TELEGRAM_API', '27499182')
-if len(api_id) == 0:
-    logging.error("TELEGRAM_API variable is missing! Exiting now")
-    exit(1)
+API_ID=27499182
+API_HASH=9c58142ef6abed28808a50e3e983c39c
+BOT_TOKEN=6429961389:AAG0vvsFegDF3aDNEOGqIYmr4Bt3xfW8Bfk
 
-api_hash = os.environ.get('TELEGRAM_HASH', '9c58142ef6abed28808a50e3e983c39c')
-if len(api_hash) == 0:
-    logging.error("TELEGRAM_HASH variable is missing! Exiting now")
-    exit(1)
-    
-bot_token = os.environ.get('BOT_TOKEN', '6429961389:AAG0vvsFegDF3aDNEOGqIYmr4Bt3xfW8Bfk')
-if len(bot_token) == 0:
-    logging.error("BOT_TOKEN variable is missing! Exiting now")
-    exit(1)
-dump_id = os.environ.get('DUMP_CHAT_ID', '')
-if len(dump_id) == 0:
-    logging.error("DUMP_CHAT_ID variable is missing! Exiting now")
-    exit(1)
-else:
-    dump_id = int(dump_id)
-
-fsub_id = os.environ.get('FSUB_ID', '')
-if len(fsub_id) == 0:
-    logging.error("FSUB_ID variable is missing! Exiting now")
-    exit(1)
-else:
-    fsub_id = int(fsub_id)
-
-app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
+app = Client(
+    "my_bot",
+    api_id=os.getenv("API_ID"),       # API ID from Telegram
+    api_hash=os.getenv("API_HASH"),   # API Hash from Telegram
+    bot_token=os.getenv("BOT_TOKEN")  # Bot Token from BotFather
+)
 
 @app.on_message(filters.command("start"))
 async def start_command(client, message):
